@@ -1,24 +1,14 @@
-import React, { useEffect, useState } from "react";
+import Home from "./pages/Home.jsx";
+import React from "react";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 const App = () => {
-  const [tasks, setTasks] = useState([]);
-
-  useEffect(() => {
-    fetch("/api/tasks")
-      .then((res) => res.json())
-      .then((tasks) => {
-        setTasks(tasks);
-      });
-  }, []);
-
   return (
-    <main>
-      {tasks.map((task) => (
-        <span className="task" key={task.id}>
-          {task.description}
-        </span>
-      ))}
-    </main>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Home />} />
+      </Routes>
+    </BrowserRouter>
   );
 };
 
