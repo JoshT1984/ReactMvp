@@ -6,7 +6,7 @@ function Gameboard() {
   };
 
   return (
-    <div onClick={doSomething} className="gameboard">
+    <div id = "UI_Bar">
       Hello
     </div>
   );
