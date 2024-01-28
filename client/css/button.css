@@ -1,0 +1,22 @@
+.btn-div {
+  display: grid;
+  justify-content: center;
+  margin-top: -29rem;
+}
+
+.button {
+  font-family: "VT323", monospace;
+  color: rgb(243, 229, 229);
+  font-size: 2rem;
+  letter-spacing: 1px;
+  text-align: center;
+  width: 10rem;
+  height: 2.4rem;
+  background: linear-gradient(
+    to right bottom,
+    rgb(27, 27, 146),
+    rgb(0, 0, 255)
+  );
+  text-align: center;
+  margin-bottom: 5rem;
+}
