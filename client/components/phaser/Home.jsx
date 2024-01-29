@@ -14,12 +14,33 @@ class Game extends Phaser.Scene {
       "../../images/spritesheets/player_spritesheet.png",
       { frameWidth: 50, frameHeight: 50 }
     );
+
+    this.load.spritesheet("acid", "../../images/spritesheets/acid_ooze.png", {
+      frameWidth: 16,
+      frameHeight: 16,
+    });
   }
 
   create() {
     this.speed = 3;
     const bgImage = this.add.image(0, 0, "background");
     bgImage.setOrigin(0, 0);
+
+    this.acid = this.physics.add.sprite(400, 50, "acid");
+
+    this.anims.create({
+      key: "idle_ooze",
+      frames: [
+        { key: "acid", frame: 0 },
+        { key: "acid", frame: 1 },
+        { key: "acid", frame: 2 },
+        { key: "acid", frame: 3 },
+      ],
+      frameRate: 8,
+      repeat: -1,
+    });
+    this.acid.play("idle_ooze");
+    this.acid.setScale(2.8);
 
     this.player = this.physics.add.sprite(400, 550, "player");
 
