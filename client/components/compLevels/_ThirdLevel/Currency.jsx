@@ -1,15 +1,17 @@
-import "../../../css/ui_bar.css";
+import "../../../css/currency.css";
+import { useState } from "react";
 
-function UI_BAR() {
-  const doSomething = () => {
-    console.log("FUCK YOU");
-  };
+function Currency() {
+  const [currentCurrency, setCurrency] = useState(0);
 
   return (
-    <div id = "UI_Bar">
-      Lives_________Health_______________Shards__Score
-    </div>
+    <>
+      <div id="currency">
+        <img src="../../images/spritesheets/blue_gem.png" alt="blue_gem" />
+      </div>
+      <div id="currAmount">x {currentCurrency}</div>
+    </>
   );
 }
 
-export default UI_BAR;
+export default Currency;

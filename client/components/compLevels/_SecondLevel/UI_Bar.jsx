@@ -1,13 +1,15 @@
 import "../../../css/ui_bar.css";
+import Lives from "../_ThirdLevel/Lives.jsx";
+import Currency from "../_ThirdLevel/Currency.jsx";
+import Score from "../_ThirdLevel/Score.jsx";
 
 function UI_BAR() {
-  const doSomething = () => {
-    console.log("FUCK YOU");
-  };
 
   return (
-    <div id = "UI_Bar">
-      Lives_________Health_______________Shards__Score
+    <div id="UI_Bar">
+      <Lives />
+      <Score />
+      <Currency />
     </div>
   );
 }

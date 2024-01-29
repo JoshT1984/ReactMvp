@@ -1,15 +1,10 @@
-import "../../../css/ui_bar.css";
+import "../../../css/score.css";
+import { useState } from "react";
 
-function UI_BAR() {
-  const doSomething = () => {
-    console.log("FUCK YOU");
-  };
+function Score() {
+  const [currentScore, setScore] = useState(3);
 
-  return (
-    <div id = "UI_Bar">
-      Lives_________Health_______________Shards__Score
-    </div>
-  );
+  return <div id="score">Score : {currentScore}</div>;
 }
 
-export default UI_BAR;
+export default Score;

@@ -1,17 +1,28 @@
+import { useState } from "react";
 import "../../../css/button.css";
 
-function Button() {
-  const doSomething = () => {
-    console.log("FUCK YOU");
+function Button({ onSubmit, musicChange }) {
+  const startGame = () => {
+    onSubmit("start");
+    musicChange(true);
+  };
+
+  const scores = () => {
+    console.log("scores");
   };
 
   return (
     <>
-  <div onClick={doSomething} className="button">Start Game</div>;
-  <div onClick={doSomething} className="button">Scores</div>;
-  </>
-  )
-  
+      <div onClick={startGame} className="button">
+        Start Game
+      </div>
+      ;
+      <div onClick={scores} className="button">
+        Scores
+      </div>
+      ;
+    </>
+  );
 }
 
 export default Button;

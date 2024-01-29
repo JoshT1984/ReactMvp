@@ -7,24 +7,28 @@ import "../../../css/app.css";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 const App = () => {
-  const [currentScreen, setScreen] = useState(true);
+  const [currentScreen, setScreen] = useState("title");
 
-  let title = true;
-
-  const switchScreenMode = () => {
-    title = !title;
-    setScreen(title);
+  const handleScreen = (response) => {
+    if (response === "start") {
+      setScreen("main");
+    }
   };
   return (
-    <div onClick={switchScreenMode}>
+    <div>
+      {currentScreen === "main" ? <UI_Bar /> : null}
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Title />} />
-          {/* {currentScreen ? (
-            <Route path="/" element={<Title />} />
+          {currentScreen === "title" ? (
+            <Route
+              path="/"
+              element={
+                <Title onSubmit={handleScreen} currentScreen={currentScreen} />
+              }
+            />
           ) : (
             <Route path="/" element={<Home />} />
-          )} */}
+          )}
         </Routes>
       </BrowserRouter>
     </div>

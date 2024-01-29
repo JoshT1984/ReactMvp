@@ -44,8 +44,16 @@ body {
   margin-left: 4px;
 }
 
-#title {
+#title_screen {
   display: flex;
   justify-content: center;
   margin-top: calc(100vh * 0.17);
 }
+
+#title {
+  display: flex;
+  justify-content: center;
+  margin-top:-26.5rem;
+}
+
+

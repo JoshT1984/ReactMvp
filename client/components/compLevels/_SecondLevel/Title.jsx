@@ -1,34 +1,60 @@
 import "../../../css/title.css";
+import { useState, useEffect } from "react";
+import title from "../../../audio/title.mp3";
+import battle from "../../../audio/battle.mp3";
 import Button from "../_ThirdLevel/Button.jsx";
 
-function Title() {
-  let isPlaying = false;
-  let sound = document.createElement("audio");
-  playMusic();
+function Title({ currentScreen, onSubmit }) {
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [sound, setSound] = useState(new Audio(title));
 
-  function playMusic() {
-    if (isPlaying === false) {
+  useEffect(() => {
+    return () => {
+      sound.pause();
+      sound.currentTime = 0;
+    };
+  }, [sound]);
+
+  const playAudio = () => {
+    if (currentScreen === "title") {
+      console.log("main");
+      sound.loop = true;
+      sound.volume = 0.1;
+      sound.play();
+      setIsPlaying(true);
+    } else {
+      sound.pause();
+    }
+  };
+
+  const handleBodyClick = () => {
+    if (!isPlaying) {
       playAudio();
     }
-    isPlaying = true;
-  }
+  };
 
-  function playAudio() {
-    sound.loop = true;
-    sound.volume = 0.1;
-    sound.src = "../../../audio/test.mp3";
-    sound.play();
-  }
+  useEffect(() => {
+    document.body.addEventListener("click", handleBodyClick);
+    return () => {};
+  }, [isPlaying]);
+
+  const switchMusic = (response) => {
+    sound.setAttribute("src", battle); //change the source
+  };
+
   return (
     <>
-      <div id="title">
+      <div id="title_screen">
         <img
           src="../../images/backgrounds/Title_Screen.png"
           alt="title_screen"
         />
       </div>
       <div className="btn-div">
-        <Button />
+        <Button onSubmit={onSubmit} musicChange={switchMusic} />
+      </div>
+      <div id="title">
+        <img src="../../images/titles/title_4.png" alt="title" />
       </div>
     </>
   );

@@ -1,7 +1,7 @@
 .btn-div {
   display: grid;
   justify-content: center;
-  margin-top: -29rem;
+  margin-top: -24rem;
 }
 
 .button {
@@ -12,11 +12,13 @@
   text-align: center;
   width: 10rem;
   height: 2.4rem;
-  background: linear-gradient(
-    to right bottom,
-    rgb(27, 27, 146),
-    rgb(0, 0, 255)
-  );
+  background: linear-gradient(to right bottom, #1b2d48, #4779c4);
   text-align: center;
-  margin-bottom: 5rem;
+  margin-bottom: 4rem;
+}
+
+.button:hover {
+  color: #071e3a;
+  transition: ease-in-out 100ms;
+  cursor: pointer;
 }
