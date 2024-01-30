@@ -27,6 +27,8 @@ function preloadAssets(scene) {
   });
 
   scene.load.audio("gemCollect", "../../audio/gem_pickup.mp3");
+  scene.load.audio("enemyExplosion", "../../audio/explosion.wav");
+  scene.load.audio("shootfire", "../../audio/shootfire.wav");
 }
 
 export default preloadAssets;

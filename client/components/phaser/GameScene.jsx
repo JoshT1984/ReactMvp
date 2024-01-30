@@ -25,12 +25,14 @@ class GameScene extends Phaser.Scene {
   create() {
     //----------------------------------ADD SFX----------------------------
     this.gemPickup = this.sound.add("gemCollect");
+    this.enemyExplosion = this.sound.add("enemyExplosion");
+    this.shootfire = this.sound.add("shootfire");
     this.speed = 3;
     //--------------------CREATE BACKGROUNDS--------------------------------
     const bgImage = this.add.image(0, 0, "background");
     bgImage.setOrigin(0, 0);
 
-    //CREATE GAMECURRENCY WITH SPAWNER---------------------------------------
+    //----------------------------------------------------CREATE GAMECURRENCY WITH SPAWNER---------------------------------------
     this.currency = this.physics.add.group({
       classType: Currency,
       runChildUpdate: true,
@@ -134,6 +136,14 @@ class GameScene extends Phaser.Scene {
         });
       }
     });
+
+    this.physics.add.collider(
+      this.acidEnemies,
+      this.fireball,
+      this.destroyEnemy,
+      null,
+      this
+    );
   }
   //////////////////////////////////////UPDATE//////////////////////////////////////////////
   update() {
@@ -208,7 +218,7 @@ class GameScene extends Phaser.Scene {
   }
 
   collectCurrency() {
-    this.score += 10;
+    this.score += 100;
     this.updateScore(this.score);
     this.totalCurrency += 1;
     this.updateCurrency(this.totalCurrency);
@@ -223,8 +233,26 @@ class GameScene extends Phaser.Scene {
     if (flames) {
       flames.setActive(true);
       flames.setVisible(true);
-      this.physics.velocityFromAngle(Phaser.Math.RadToDeg(angle), 150, flames.body.velocity);
+      flames.setScale(1.5);
+      flames.body.setSize(10, 15);
+      this.shootfire.play();
+
+      this.physics.velocityFromAngle(
+        Phaser.Math.RadToDeg(angle),
+        350,
+        flames.body.velocity
+      );
     }
+  }
+
+  destroyEnemy(acidEnemies, fireball) {
+    // this.gemPickup.play();
+    // this.collectCurrency();
+    acidEnemies.destroy();
+    fireball.destroy();
+    this.score += 10;
+    this.updateScore(this.score);
+    this.enemyExplosion.play();
   }
 }
 
