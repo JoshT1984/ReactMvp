@@ -1,10 +1,11 @@
 import "../../../css/score.css";
-import { useState } from "react";
+import React from "react";
 
-function Score() {
-  const [currentScore, setScore] = useState(0);
-
-  return <div id="score">Score : {currentScore}</div>;
-}
+const Score = ({ score, updateScore }) => {
+  const updateScoreLocal = (newScore) => {
+    updateScore(newScore);
+  };
+  return <div id="score">Score : {score}</div>;
+};
 
 export default Score;

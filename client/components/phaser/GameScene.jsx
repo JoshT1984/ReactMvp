@@ -1,12 +1,21 @@
+import React, { useState } from "react";
 import Phaser from "phaser";
 import playerMovement from "./playerMovement.js";
 import preloadAssets from "./preloadAssets.js";
 import animations from "./animations.js";
 import Enemy from "./Enemy.jsx";
-import Currency from "./Currency.jsx";
 let isSpawn = true;
+import Currency from "./Currency.jsx";
 
 class GameScene extends Phaser.Scene {
+  constructor(updateScore, updateCurrency) {
+    super("GameScene");
+    this.score = 0;
+    this.updateScore = updateScore;
+    this.totalCurrency = 0;
+    this.updateCurrency = updateCurrency;
+    this.collectCurrency = this.collectCurrency.bind(this);
+  }
   preload() {
     preloadAssets(this);
   }
@@ -36,14 +45,6 @@ class GameScene extends Phaser.Scene {
       loop: isSpawn,
     });
 
-    // this.physics.add.overlap(
-    //   this.player,
-    //   this.currency,
-    //   this.destroyCurrency,
-    //   null,
-    //   this
-    // );
-
     //---------------ENEMIES-------------------------------
 
     this.acidEnemies = this.physics.add.group({
@@ -68,7 +69,7 @@ class GameScene extends Phaser.Scene {
     // this.player.setoffset(45, 0);
     animations(this.player, "idle");
     this.player.setScale(2.8);
-    this.physics.world.setBounds(12, 5, 785, 550);
+    this.physics.world.setBounds(90, 60, 630, 440);
     this.player.setCollideWorldBounds(true);
 
     this.cursors = this.input.keyboard.createCursorKeys();
@@ -106,8 +107,8 @@ class GameScene extends Phaser.Scene {
   }
   //-----------------CURRENCY SPAWN--------------------------
   spawnCurrency() {
-    let randX = Math.floor(Math.random() * 700) + 50;
-    let randY = Math.floor(Math.random() * 450) + 55;
+    let randX = Math.floor(Math.random() * 600) + 50;
+    let randY = Math.floor(Math.random() * 400) + 55;
     let x = randX;
     let y = randY;
 
@@ -120,7 +121,7 @@ class GameScene extends Phaser.Scene {
   }
   //-------------------ENEMY SPAWN ----------------------------------------
   spawnEnemy() {
-    let randX = Math.floor(Math.random() * 700) + 50;
+    let randX = Math.floor(Math.random() * 650) + 50;
     const x = randX;
     const y = 55;
     const acid = this.acidEnemies.get(x, y);
@@ -134,9 +135,17 @@ class GameScene extends Phaser.Scene {
     }
   }
 
-  destroyCurrency(player,currency) {
+  destroyCurrency(player, currency) {
     this.gemPickup.play();
+    this.collectCurrency();
     currency.destroy();
+  }
+
+  collectCurrency() {
+    this.score += 10;
+    this.updateScore(this.score);
+    this.totalCurrency += 1;
+    this.updateCurrency(this.totalCurrency);
   }
 }
 

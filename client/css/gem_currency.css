@@ -1,0 +1,20 @@
+#currency {
+  margin-top: -37.8rem;
+  margin-left: 40rem;
+  position: absolute;
+  font-family: "VT323", monospace;
+  color: white;
+  font-size: 1.8rem;
+  width: 8rem;
+  scale: 0.8;
+}
+
+#currAmount {
+  margin-top: -37.4rem;
+  margin-left: 43.4rem;
+  position: absolute;
+  font-family: "VT323", monospace;
+  color: white;
+  font-size: 1.8rem;
+  width: 8rem;
+}
