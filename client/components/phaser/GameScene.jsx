@@ -1,9 +1,10 @@
 import React, { useState } from "react";
-import Phaser from "phaser";
+import Phaser, { Time } from "phaser";
 import playerMovement from "./playerMovement.js";
 import preloadAssets from "./preloadAssets.js";
 import animations from "./animations.js";
 import Enemy from "./Enemy.jsx";
+import Fireball from "./Fireball.jsx";
 let isSpawn = true;
 import Currency from "./Currency.jsx";
 
@@ -15,6 +16,7 @@ class GameScene extends Phaser.Scene {
     this.totalCurrency = 0;
     this.updateCurrency = updateCurrency;
     this.collectCurrency = this.collectCurrency.bind(this);
+    this.canShoot = true;
   }
   preload() {
     preloadAssets(this);
@@ -45,7 +47,16 @@ class GameScene extends Phaser.Scene {
       loop: isSpawn,
     });
 
-    //---------------ENEMIES-------------------------------
+    //--------------------------------------------------Create FIREBALL GROUP WITH Children
+    this.fireball = this.physics.add.group({
+      classType: Fireball,
+      runChildUpdate: true,
+    });
+    this.fireball.children.iterate((flames) => {
+      flames.setScale(1.5);
+    });
+
+    //-------------------------------------------------------ENEMIES-------------------------------
 
     this.acidEnemies = this.physics.add.group({
       classType: Enemy,
@@ -56,7 +67,7 @@ class GameScene extends Phaser.Scene {
       enemy.setScale(2);
     });
 
-    //-------------------PLAYER-------------------------------
+    //-----------------------------------------------------------PLAYER-------------------------------
     this.player = this.physics.add.sprite(400, 550, "player");
     this.physics.add.collider(
       this.player,
@@ -71,6 +82,30 @@ class GameScene extends Phaser.Scene {
     this.player.setScale(2.8);
     this.physics.world.setBounds(90, 60, 630, 440);
     this.player.setCollideWorldBounds(true);
+
+    //-----------------------------------------------------------ADD TORCH and FLAME SPRITES--------------------------------
+    this.torch = this.add.container(0, 0);
+    this.torchHandle = this.physics.add.sprite(0, 0, "torch_handle");
+    this.torchHandle.setScale(1.2);
+    this.torchHandle.setOrigin(0.5, 1);
+    animations(this.torchHandle, "flame");
+
+    this.torch.add(this.torchHandle);
+    this.torchHandle.play("flame");
+
+    this.torchFollowPlayer();
+
+    //--------------------------------------------------------------------Allows Torch to rotate with mouse cursor
+    this.input.on("pointermove", (pointer) => {
+      const angle = Phaser.Math.Angle.Between(
+        this.torch.x,
+        this.torch.y,
+        pointer.x,
+        pointer.y
+      );
+      // --------------------------------------------------------Makes torch follow mouse cursor---------------------------------------
+      this.torch.setAngle(Phaser.Math.RadToDeg(angle) + 90);
+    });
 
     this.cursors = this.input.keyboard.createCursorKeys();
     this.keys = this.input.keyboard.addKeys({
@@ -88,9 +123,22 @@ class GameScene extends Phaser.Scene {
       callbackScope: this,
       loop: isSpawn,
     });
+
+    //---------------------------------------------------------Event Listener to Shoot Fireball with delay
+    this.input.on("pointerdown", () => {
+      if (this.canShoot) {
+        this.shootFireball();
+        this.canShoot = false;
+        this.time.delayedCall(1000, () => {
+          this.canShoot = true;
+        });
+      }
+    });
   }
   //////////////////////////////////////UPDATE//////////////////////////////////////////////
   update() {
+    this.torchFollowPlayer();
+
     this.acidEnemies.children.iterate((enemy) => {
       this.physics.moveToObject(enemy, this.player);
       enemy.setScale(2.2);
@@ -102,13 +150,29 @@ class GameScene extends Phaser.Scene {
       gem.body.setSize(20, 30);
     });
 
+    this.fireball.children.iterate((flame) => {
+      //---------------------------------------------DESTROYS FIREBALL IF OFF SCREEN -----------------------------------------------
+      if (flame) {
+        if (flame.x < 0 || flame.x > 800 || flame.y < 0 || flame.y > 600) {
+          flame.destroy();
+        }
+      } else {
+        return;
+      }
+    });
+
     playerMovement(this);
-    // this.enemyFollows();
   }
-  //-----------------CURRENCY SPAWN--------------------------
+
+  torchFollowPlayer() {
+    this.torch.x = this.player.x;
+    this.torch.y = this.player.y;
+  }
+
+  //------------------------------------------------------------CURRENCY SPAWN--------------------------
   spawnCurrency() {
-    let randX = Math.floor(Math.random() * 600) + 50;
-    let randY = Math.floor(Math.random() * 400) + 55;
+    let randX = Math.floor(Math.random() * 600) + 65;
+    let randY = Math.floor(Math.random() * 400) + 65;
     let x = randX;
     let y = randY;
 
@@ -119,7 +183,7 @@ class GameScene extends Phaser.Scene {
       gem.setVisible(true);
     }
   }
-  //-------------------ENEMY SPAWN ----------------------------------------
+  //------------------------------------------------------------ENEMY SPAWN ----------------------------------------
   spawnEnemy() {
     let randX = Math.floor(Math.random() * 650) + 50;
     const x = randX;
@@ -132,6 +196,8 @@ class GameScene extends Phaser.Scene {
       acid.body.setVelocityY(100);
       animations(acid, "idle_ooze");
       acid.play("idle_ooze");
+    } else {
+      acid.destroy();
     }
   }
 
@@ -147,6 +213,30 @@ class GameScene extends Phaser.Scene {
     this.totalCurrency += 1;
     this.updateCurrency(this.totalCurrency);
   }
+
+  shootFireball() {
+    const x = this.torch.x;
+    const y = this.torch.y;
+
+    const angle = Phaser.Math.Angle.Between(x, y, this.input.x, this.input.y);
+    const flames = this.fireball.get(x, y);
+    if (flames) {
+      flames.setActive(true);
+      flames.setVisible(true);
+      this.physics.velocityFromAngle(Phaser.Math.RadToDeg(angle), 150, flames.body.velocity);
+    }
+  }
 }
+
+// this.input.on("pointermove", (pointer) => {
+//   const angle = Phaser.Math.Angle.Between(
+//     this.torch.x,
+//     this.torch.y,
+//     pointer.x,
+//     pointer.y
+//   );
+//   // --------------------------------------------------------Makes torch follow mouse cursor---------------------------------------
+//   this.torch.setAngle(Phaser.Math.RadToDeg(angle) + 90);
+// });
 
 export default GameScene;

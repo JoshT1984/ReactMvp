@@ -17,7 +17,6 @@ function Title({ currentScreen, onSubmit }) {
 
   const playAudio = () => {
     if (currentScreen === "title") {
-      console.log("main");
       sound.loop = true;
       sound.volume = 0.1;
       sound.play();

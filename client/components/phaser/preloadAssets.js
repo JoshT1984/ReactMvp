@@ -3,6 +3,10 @@ import Phaser from "phaser";
 
 function preloadAssets(scene) {
   scene.load.image(
+    "fireball",
+    "../../images/spritesheets/fireball.png"
+  );
+  scene.load.image(
     "background",
     "../../images/backgrounds/main_background.png"
   );
@@ -15,6 +19,11 @@ function preloadAssets(scene) {
   scene.load.spritesheet("acid", "../../images/spritesheets/acid_ooze.png", {
     frameWidth: 16,
     frameHeight: 16,
+  });
+ 
+  scene.load.spritesheet("torch_handle", "../../images/spritesheets/torch.png", {
+    frameWidth: 32,
+    frameHeight: 32,
   });
 
   scene.load.audio("gemCollect", "../../audio/gem_pickup.mp3");
