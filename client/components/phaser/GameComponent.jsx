@@ -2,19 +2,23 @@ import React, { useState, useEffect } from "react";
 import GameScene from "./GameScene";
 import Phaser from "phaser";
 import "./phaser.css";
-import Score from "../compLevels/_ThirdLevel/Score";
+import Score from "../compLevels/_ThirdLevel/Score.jsx";
+import Lives from "../compLevels/_ThirdLevel/Lives.jsx";
 import Gem_Currency from "../compLevels/_ThirdLevel/Gem_Currency.jsx";
 
 const GameComponent = () => {
   const [currentScore, setScore] = useState(0);
   const [currentCurrency, setCurrency] = useState(0);
+  const [currentLives, setLives] = useState(3);
 
   const updateScore = (newScore) => {
     setScore(newScore);
   };
   const updateCurrency = (newCurrency) => {
     setCurrency(newCurrency);
-    console.log(newCurrency);
+  };
+  const updateLives = (newLives) => {
+    setLives(newLives);
   };
   useEffect(() => {
     const game = new Phaser.Game({
@@ -22,7 +26,7 @@ const GameComponent = () => {
       parent: "phaser-container",
       width: 800,
       height: 600,
-      scene: [new GameScene(updateScore, updateCurrency)],
+      scene: [new GameScene(updateScore, updateCurrency, updateLives)],
       physics: {
         default: "arcade",
         arcade: {
@@ -45,6 +49,7 @@ const GameComponent = () => {
         currency={currentCurrency}
         updateCurrency={updateCurrency}
       />
+      <Lives lives={currentLives} updateLives={updateLives} />
     </div>
   );
 };

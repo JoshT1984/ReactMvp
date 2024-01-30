@@ -6,7 +6,7 @@ import Score from "../_ThirdLevel/Score.jsx";
 function UI_BAR() {
   return (
     <div id="UI_Bar">
-      <Lives />
+      <></>
       <></>
       <></>
     </div>

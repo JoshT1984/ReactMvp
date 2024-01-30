@@ -53,7 +53,7 @@ function Title({ currentScreen, onSubmit }) {
         <Button onSubmit={onSubmit} musicChange={switchMusic} />
       </div>
       <div id="title">
-        <img src="../../images/titles/title_4.png" alt="title" />
+        <img src="../../images/titles/title.png" alt="title" />
       </div>
     </>
   );

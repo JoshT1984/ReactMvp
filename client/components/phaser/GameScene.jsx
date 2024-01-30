@@ -5,18 +5,22 @@ import preloadAssets from "./preloadAssets.js";
 import animations from "./animations.js";
 import Enemy from "./Enemy.jsx";
 import Fireball from "./Fireball.jsx";
-let isSpawn = true;
+
 import Currency from "./Currency.jsx";
 
 class GameScene extends Phaser.Scene {
-  constructor(updateScore, updateCurrency) {
+  constructor(updateScore, updateCurrency, updateLives) {
     super("GameScene");
+    this.isSpawn = true;
     this.score = 0;
     this.updateScore = updateScore;
     this.totalCurrency = 0;
     this.updateCurrency = updateCurrency;
+    this.lives = 3;
+    this.updateLives = updateLives;
     this.collectCurrency = this.collectCurrency.bind(this);
     this.canShoot = true;
+    this.canLoseLife = true;
   }
   preload() {
     preloadAssets(this);
@@ -27,6 +31,7 @@ class GameScene extends Phaser.Scene {
     this.gemPickup = this.sound.add("gemCollect");
     this.enemyExplosion = this.sound.add("enemyExplosion");
     this.shootfire = this.sound.add("shootfire");
+    this.hit = this.sound.add("hit");
     this.speed = 3;
     //--------------------CREATE BACKGROUNDS--------------------------------
     const bgImage = this.add.image(0, 0, "background");
@@ -46,7 +51,7 @@ class GameScene extends Phaser.Scene {
       delay: 8000,
       callback: this.spawnCurrency,
       callbackScope: this,
-      loop: isSpawn,
+      loop: this.isSpawn,
     });
 
     //--------------------------------------------------Create FIREBALL GROUP WITH Children
@@ -69,7 +74,7 @@ class GameScene extends Phaser.Scene {
       enemy.setScale(2);
     });
 
-    //-----------------------------------------------------------PLAYER-------------------------------
+    //-----------------------------------------------------------PLAYER/CuRRENCY COLLIDER-------------------------------
     this.player = this.physics.add.sprite(400, 550, "player");
     this.physics.add.collider(
       this.player,
@@ -78,10 +83,20 @@ class GameScene extends Phaser.Scene {
       null,
       this
     );
+    //-----------------------------------------------------------PLAYER/ENEMY COLLIDER-------------------------------
+    this.physics.add.collider(
+      this.player,
+      this.acidEnemies,
+      this.loseLive,
+      null,
+      this
+    );
+
     this.player.body.setSize(10, 20);
     // this.player.setoffset(45, 0);
     animations(this.player, "idle");
     this.player.setScale(2.8);
+    //-----------------------------------------------------------PLAYER/WORLD COLLIDER-------------------------------
     this.physics.world.setBounds(90, 60, 630, 440);
     this.player.setCollideWorldBounds(true);
 
@@ -123,7 +138,7 @@ class GameScene extends Phaser.Scene {
       delay: 6000,
       callback: this.spawnEnemy,
       callbackScope: this,
-      loop: isSpawn,
+      loop: this.isSpawn,
     });
 
     //---------------------------------------------------------Event Listener to Shoot Fireball with delay
@@ -136,7 +151,7 @@ class GameScene extends Phaser.Scene {
         });
       }
     });
-
+    //-----------------------------------------------------------FIREBALL/ENEMY COLLIDER-------------------------------
     this.physics.add.collider(
       this.acidEnemies,
       this.fireball,
@@ -181,8 +196,8 @@ class GameScene extends Phaser.Scene {
 
   //------------------------------------------------------------CURRENCY SPAWN--------------------------
   spawnCurrency() {
-    let randX = Math.floor(Math.random() * 600) + 65;
-    let randY = Math.floor(Math.random() * 400) + 65;
+    let randX = Math.floor(Math.random() * 600) + 80;
+    let randY = Math.floor(Math.random() * 400) + 80;
     let x = randX;
     let y = randY;
 
@@ -224,6 +239,34 @@ class GameScene extends Phaser.Scene {
     this.updateCurrency(this.totalCurrency);
   }
 
+  loseLive() {
+    if (!this.canLoseLife) {
+      return;
+    }
+
+    this.canLoseLife = false; // Set the cooldown flag
+
+    this.lives -= 1;
+    const currentVelocityX = this.player.body.velocity.x;
+    const currentVelocityY = this.player.body.velocity.y;
+    const newVelocityX = currentVelocityX > 0 ? -200 : 200;
+    const newVelocityY = currentVelocityY > 0 ? 200 : -200;
+    this.player.setVelocityX(newVelocityX);
+    this.player.setVelocityY(newVelocityY);
+    this.updateLives(this.lives);
+    this.hit.play();
+
+    const originalTint = this.player.tint;
+    this.player.setTint(0xff0000);
+
+    this.time.delayedCall(500, () => {
+      this.player.setVelocityX(0);
+      this.player.setVelocityY(0);
+      this.player.setTint(originalTint);
+      this.canLoseLife = true;
+    });
+  }
+
   shootFireball() {
     const x = this.torch.x;
     const y = this.torch.y;
@@ -246,8 +289,6 @@ class GameScene extends Phaser.Scene {
   }
 
   destroyEnemy(acidEnemies, fireball) {
-    // this.gemPickup.play();
-    // this.collectCurrency();
     acidEnemies.destroy();
     fireball.destroy();
     this.score += 10;
@@ -255,16 +296,5 @@ class GameScene extends Phaser.Scene {
     this.enemyExplosion.play();
   }
 }
-
-// this.input.on("pointermove", (pointer) => {
-//   const angle = Phaser.Math.Angle.Between(
-//     this.torch.x,
-//     this.torch.y,
-//     pointer.x,
-//     pointer.y
-//   );
-//   // --------------------------------------------------------Makes torch follow mouse cursor---------------------------------------
-//   this.torch.setAngle(Phaser.Math.RadToDeg(angle) + 90);
-// });
 
 export default GameScene;

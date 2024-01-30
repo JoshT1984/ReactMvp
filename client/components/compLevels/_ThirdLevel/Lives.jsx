@@ -1,10 +1,11 @@
 import "../../../css/lives.css";
-import { useState } from "react";
+import React from "react";
 
-function Lives() {
-  const [currentLives, setLives] = useState(3);
-
-  return <div id="lives">Lives: {currentLives}</div>;
-}
+const Lives = ({ lives, updateLives }) => {
+  const updateLivesLocal = (newLives) => {
+    updateLives(newLives);
+  };
+  return <div id="lives">Lives: {lives}</div>;
+};
 
 export default Lives;
