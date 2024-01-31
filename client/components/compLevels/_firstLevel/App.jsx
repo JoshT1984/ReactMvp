@@ -9,32 +9,53 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 const App = () => {
   const [currentScreen, setScreen] = useState("title");
-  // const [currentScreen, setScreen] = useState("gameover");
+  const [startGameover, setGameover] = useState(false);
 
+  // const [currentScreen, setScreen] = useState("gameover");
   const handleScreen = (response) => {
     if (response === "start") {
       setScreen("main");
     }
   };
+
+  const handleLivesChange = () => {
+    console.log("FUCK OFF");
+    setGameover(true);
+  };
+
   return (
     <div>
-      {currentScreen === "main" ? <UI_Bar /> : null}
+     {(currentScreen === "main" || currentScreen === "gameover") && <UI_Bar />}
+
       <BrowserRouter>
         <Routes>
-          {currentScreen === "title" ? (
-            // {currentScreen === "gameover" ? (
+          {startGameover === false ? (
+            currentScreen === "title" ? (
+              <Route
+                path="/"
+                element={
+                  <Title
+                    onSubmit={handleScreen}
+                    currentScreen={currentScreen}
+                  />
+                }
+              />
+            ) : (
+              <Route
+                path="/"
+                element={
+                  <Home
+                    currentScreen={currentScreen}
+                    onLivesChange={handleLivesChange}
+                  />
+                }
+              />
+            )
+          ) : (
             <Route
               path="/"
-              element={
-                <Title
-                  // <Gameover
-                  onSubmit={handleScreen}
-                  currentScreen={currentScreen}
-                />
-              }
+              element={<Gameover currentScreen={currentScreen} />}
             />
-          ) : (
-            <Route path="/" element={<Home />} />
           )}
         </Routes>
       </BrowserRouter>
@@ -43,7 +64,3 @@ const App = () => {
 };
 
 export default App;
-
-{
-  /* <Route path="/" element={<Title />}/> */
-}

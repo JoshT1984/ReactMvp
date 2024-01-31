@@ -2,10 +2,7 @@
 import Phaser from "phaser";
 
 function preloadAssets(scene) {
-  scene.load.image(
-    "fireball",
-    "../../images/spritesheets/fireball.png"
-  );
+  scene.load.image("fireball", "../../images/spritesheets/fireball.png");
   scene.load.image(
     "background",
     "../../images/backgrounds/main_background.png"
@@ -20,16 +17,23 @@ function preloadAssets(scene) {
     frameWidth: 16,
     frameHeight: 16,
   });
- 
-  scene.load.spritesheet("torch_handle", "../../images/spritesheets/torch.png", {
-    frameWidth: 32,
-    frameHeight: 32,
-  });
+
+  scene.load.spritesheet(
+    "torch_handle",
+    "../../images/spritesheets/torch.png",
+    {
+      frameWidth: 32,
+      frameHeight: 32,
+    }
+  );
 
   scene.load.audio("gemCollect", "../../audio/gem_pickup.mp3");
   scene.load.audio("enemyExplosion", "../../audio/explosion.wav");
   scene.load.audio("shootfire", "../../audio/shootfire.wav");
   scene.load.audio("hit", "../../audio/hit.wav");
+
+  scene.load.audio("title", "../../../audio/title.mp3");
+  scene.load.audio("battle", "../../../audio/battle.mp3");
 }
 
 export default preloadAssets;

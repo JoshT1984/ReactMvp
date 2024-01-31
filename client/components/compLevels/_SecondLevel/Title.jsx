@@ -4,16 +4,9 @@ import title from "../../../audio/title.mp3";
 import battle from "../../../audio/battle.mp3";
 import Button from "../_ThirdLevel/Button.jsx";
 
-function Title({ currentScreen, onSubmit }) {
+function Title({ currentScreen, onSubmit}) {
   const [isPlaying, setIsPlaying] = useState(false);
   const [sound, setSound] = useState(new Audio(title));
-
-  useEffect(() => {
-    return () => {
-      sound.pause();
-      sound.currentTime = 0;
-    };
-  }, [sound]);
 
   const playAudio = () => {
     if (currentScreen === "title") {
@@ -23,7 +16,17 @@ function Title({ currentScreen, onSubmit }) {
       setIsPlaying(true);
     } else {
       sound.pause();
+      sound.currentTime = 0;
+      setIsPlaying(false);
     }
+  };
+
+  const switchMusic = (response, attribute) => {
+    sound.pause();
+    sound.currentTime = 0;
+    sound.setAttribute("src", battle); // Change the source
+    sound.play();
+    setIsPlaying(true);
   };
 
   const handleBodyClick = () => {
@@ -36,10 +39,6 @@ function Title({ currentScreen, onSubmit }) {
     document.body.addEventListener("click", handleBodyClick);
     return () => {};
   }, [isPlaying]);
-
-  const switchMusic = (response) => {
-    sound.setAttribute("src", battle); //change the source
-  };
 
   return (
     <>
