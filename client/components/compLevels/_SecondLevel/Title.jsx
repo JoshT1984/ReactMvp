@@ -1,57 +1,57 @@
 import "../../../css/title.css";
 import { useState, useEffect } from "react";
-import title from "../../../audio/title.mp3";
-import battle from "../../../audio/battle.mp3";
+// import title from "../../../audio/title.mp3";
+// import battle from "../../../audio/battle.mp3";
 import Button from "../_ThirdLevel/Button.jsx";
 
 function Title({ currentScreen, onSubmit }) {
-  const [isPlaying, setIsPlaying] = useState(false);
-  const [sound, setSound] = useState(new Audio(title));
+  // const [isPlaying, setIsPlaying] = useState(false);
+  // const [sound, setSound] = useState(new Audio(title));
 
-  const playAudio = () => {
-    if (currentScreen === "title") {
-      sound.loop = true;
-      sound.volume = 0.1;
-      sound.play();
-      setIsPlaying(true);
-    } else {
-      sound.pause();
-      sound.currentTime = 0;
-      setIsPlaying(false);
-    }
-  };
+  // const playAudio = () => {
+  //   if (currentScreen === "title") {
+  //     sound.loop = true;
+  //     sound.volume = 0.1;
+  //     sound.play();
+  //     setIsPlaying(true);
+  //   } else {
+  //     sound.pause();
+  //     sound.currentTime = 0;
+  //     setIsPlaying(false);
+  //   }
+  // };
 
-  const switchMusic = (response, attribute) => {
-    sound.pause();
-    sound.currentTime = 0;
-    sound.setAttribute("src", battle); // Change the source
-    sound.play();
-    setIsPlaying(true);
-    if (currentScreen === "gameover") {
-      onSubmit("gameover");
-    } else {
-      onSubmit("start");
-    }
-  };
+  // const switchMusic = (response, attribute) => {
+  //   sound.pause();
+  //   sound.currentTime = 0;
+  //   sound.setAttribute("src", battle); // Change the source
+  //   sound.play();
+  //   setIsPlaying(true);
+  //   if (currentScreen === "gameover") {
+  //     onSubmit("gameover");
+  //   } else {
+  //     onSubmit("start");
+  //   }
+  // };
 
-  useEffect(() => {
-    // playAudio();
-    return () => {
-      sound.pause();
-      sound.currentTime = 0;
-    };
-  }, [currentScreen]);
+  // useEffect(() => {
+  //   // playAudio();
+  //   return () => {
+  //     sound.pause();
+  //     sound.currentTime = 0;
+  //   };
+  // }, [currentScreen]);
 
-  const handleBodyClick = () => {
-    if (!isPlaying) {
-      playAudio();
-    }
-  };
+  // const handleBodyClick = () => {
+  //   if (!isPlaying) {
+  //     playAudio();
+  //   }
+  // };
 
-  useEffect(() => {
-    document.body.addEventListener("click", handleBodyClick);
-    return () => {};
-  }, [isPlaying]);
+  // useEffect(() => {
+  //   document.body.addEventListener("click", handleBodyClick);
+  //   return () => {};
+  // }, [isPlaying]);
 
   return (
     <>
@@ -62,7 +62,8 @@ function Title({ currentScreen, onSubmit }) {
         />
       </div>
       <div className="btn-div">
-        <Button onSubmit={onSubmit} musicChange={switchMusic} />
+        <Button onSubmit={onSubmit}  />
+        {/* //musicChange={switchMusic} */}
       </div>
       <div id="title">
         <img src="../../images/titles/title.png" alt="title" />
