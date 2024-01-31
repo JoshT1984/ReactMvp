@@ -67,7 +67,7 @@ app.post("/player", async (req, res, next) => {
 });
 //---------------------------------------------PATCH ROUTE TO UPDATE PLAYER (ID,  FIRSTNAME, LASTNAME, SCORE, GAME_ID)
 
-app.patch("/player:id", async (req, res) => {
+app.patch("/player/:id", async (req, res) => {
   const { id } = req.params;
   const { firstname, lastname, score, game_id } = req.body;
 
@@ -92,7 +92,7 @@ app.patch("/player:id", async (req, res) => {
 
 // ------------------------------------------------------------DELETE METHOD TO DELETE PLAYER OR SCORE
 
-app.delete("/player:id", async (req, res) => {
+app.delete("/player/:id", async (req, res) => {
   const { id } = req.params;
 
   const parsedId = parseInt(id, 10);
