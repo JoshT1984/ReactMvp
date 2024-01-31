@@ -14,8 +14,7 @@ CREATE TABLE ui_Features(
     text_Color VARCHAR(255) NOT NULL,
     width INTEGER NOT NULL,
     height INTEGER NOT NULL,
-    game_id INTEGER UNIQUE NOT NULL,
-    CONSTRAINT ui_features_game_id_foreign FOREIGN KEY(game_id) REFERENCES gameboard(game_id)
+    game_id INTEGER 
 );
 
 CREATE TABLE player(
@@ -23,6 +22,5 @@ CREATE TABLE player(
     firstname VARCHAR(255) NOT NULL,
     lastname VARCHAR(255) NOT NULL,
     score INTEGER NOT NULL,
-    game_id INTEGER UNIQUE NOT NULL,
-    CONSTRAINT player_game_id_foreign FOREIGN KEY(game_id) REFERENCES gameboard(game_id)
+    game_id INTEGER
 );
