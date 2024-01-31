@@ -1,5 +1,5 @@
-.phaserBoard {
-  display: flex;
-  justify-content: center;
-  margin-top: calc(100vh * 0.16);
+#phaser-container {
+  position: absolute;
+  top:9.6rem;
+  left:-15rem;
 }

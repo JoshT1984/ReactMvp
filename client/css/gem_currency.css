@@ -1,6 +1,6 @@
 #currency {
-  margin-top: -37.8rem;
-  margin-left: 40rem;
+  top:9.7rem;
+  left: 74rem;
   position: absolute;
   font-family: "VT323", monospace;
   color: white;
@@ -10,8 +10,8 @@
 }
 
 #currAmount {
-  margin-top: -37.4rem;
-  margin-left: 43.4rem;
+  top: 10rem;
+  left: 77.5rem;
   position: absolute;
   font-family: "VT323", monospace;
   color: white;

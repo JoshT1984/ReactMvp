@@ -4,7 +4,7 @@ import title from "../../../audio/title.mp3";
 import battle from "../../../audio/battle.mp3";
 import Button from "../_ThirdLevel/Button.jsx";
 
-function Title({ currentScreen, onSubmit}) {
+function Title({ currentScreen, onSubmit }) {
   const [isPlaying, setIsPlaying] = useState(false);
   const [sound, setSound] = useState(new Audio(title));
 
@@ -27,7 +27,20 @@ function Title({ currentScreen, onSubmit}) {
     sound.setAttribute("src", battle); // Change the source
     sound.play();
     setIsPlaying(true);
+    if (currentScreen === "gameover") {
+      onSubmit("gameover");
+    } else {
+      onSubmit("start");
+    }
   };
+
+  useEffect(() => {
+    // playAudio();
+    return () => {
+      sound.pause();
+      sound.currentTime = 0;
+    };
+  }, [currentScreen]);
 
   const handleBodyClick = () => {
     if (!isPlaying) {
