@@ -1,13 +1,13 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Home from "../../phaser/Home.jsx";
 import UI_Bar from "../_SecondLevel/UI_Bar.jsx";
 import Title from "../_SecondLevel/Title.jsx";
+import ScoreWindow from "../_SecondLevel/ScoreWindow.jsx";
 import Gameover from "../_SecondLevel/Gameover.jsx";
-import React from "react";
 import "../../../css/app.css";
 
 import { useAudio } from "./AudioContext";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 const App = () => {
   const [currentScreen, setScreen] = useState("title");
@@ -17,10 +17,10 @@ const App = () => {
   useEffect(() => {
     // Stop any currently playing audio before starting a new one
     stopAllAudio();
-  
+
     // Play audio based on the current screen
     let audioPath = "";
-  
+
     switch (currentScreen) {
       case "title":
         audioPath = "../../../../audio/title.mp3";
@@ -39,12 +39,13 @@ const App = () => {
     }
   }, [currentScreen]);
 
-  // const [currentScreen, setScreen] = useState("gameover");
   const handleScreen = (response) => {
     if (response === "start") {
       setScreen("main");
-    } else {
-      setScreen("gameover");
+    }
+    if (response === "scoreWindow") {
+      console.log("HELLO");
+      setScreen("scoreWindow");
     }
   };
 
@@ -55,42 +56,25 @@ const App = () => {
 
   return (
     <div>
-      {/* {(currentScreen === "main" || currentScreen === "gameover") && <UI_Bar />} */}
-      {(currentScreen === "main" && !startGameover) ||
-      (currentScreen === "gameover" && startGameover) ? (
-        <UI_Bar />
-      ) : null}
+      {((currentScreen === "main" && !startGameover) ||
+        (currentScreen === "gameover" && startGameover)) && <UI_Bar />}
 
       <BrowserRouter>
         <Routes>
-          {startGameover === false ? (
-            currentScreen === "title" ? (
-              <Route
-                path="/"
-                element={
-                  <Title
-                    onSubmit={handleScreen}
-                    currentScreen={currentScreen}
-                  />
-                }
-              />
-            ) : (
-              <Route
-                path="/"
-                element={
-                  <Home
-                    currentScreen={currentScreen}
-                    onLivesChange={handleLivesChange}
-                  />
-                }
-              />
-            )
-          ) : (
-            <Route
-              path="/"
-              element={<Gameover currentScreen={currentScreen} />}
-            />
-          )}
+          <Route
+            path="/"
+            element={
+              currentScreen === "title" ? (
+                <Title onSubmit={handleScreen} currentScreen={currentScreen} />
+              ) : currentScreen === "main" ? (
+                <Home currentScreen={currentScreen} onLivesChange={handleLivesChange} />
+              ) : currentScreen === "scoreWindow" ? (
+                <ScoreWindow currentScreen={currentScreen} />
+              ) : (
+                <Gameover currentScreen={currentScreen} />
+              )
+            }
+          />
         </Routes>
       </BrowserRouter>
     </div>

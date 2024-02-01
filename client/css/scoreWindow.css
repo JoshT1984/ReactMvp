@@ -1,0 +1,95 @@
+body {
+  margin: 0;
+  background-color: black;
+  overflow: hidden; /* Hide scrollbars */
+
+  .main {
+    padding: 8px;
+  }
+
+  .task {
+    display: flex;
+    align-items: center;
+    border: 1px solid black;
+    padding: 2px;
+    max-width: 200px;
+  }
+
+  .task + .task {
+    margin-top: 4px;
+  }
+
+  .task > * + * {
+    margin-left: 4px;
+  }
+}
+
+.main {
+  padding: 8px;
+}
+
+.task {
+  display: flex;
+  align-items: center;
+  border: 1px solid black;
+  padding: 2px;
+  max-width: 200px;
+}
+
+.task + .task {
+  margin-top: 4px;
+}
+
+.task > * + * {
+  margin-left: 4px;
+}
+
+#scoreWindow {
+  display: flex;
+  justify-content: center;
+  margin-top: calc(100vh * 0.17);
+}
+
+.scoreTable {
+  position: absolute;
+  left: 40rem;
+  bottom: 15rem;
+  justify-content: center;
+  font-family: "VT323", monospace;
+  width: calc(100vw * 0.33);
+  height: calc(100vh * 0.5);
+  background-color: #83aff0;
+  border: 1px solid black;
+  font-size: 1.5rem;
+  color: white;
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  th {
+    position: relative;
+    width: 30%; /* Adjust this value based on your layout */
+    height: calc(100vh * 0.55);
+    padding-bottom: 1rem;
+    right: -1rem;
+    text-decoration: underline;
+    bottom: 10rem;
+    color: #1b2d48;
+  }
+  td {
+    position: relative;
+    left: 5.5rem;
+    bottom: 25rem;
+  }
+}
+
+.form {
+  position: absolute;
+  width:100rem;
+  left: 40rem;
+  bottom: 13rem;
+  padding:10px;
+  margin-right:10px;
+}

@@ -4,11 +4,10 @@ import "../../../css/button.css";
 function Button({ onSubmit, musicChange }) {
   const startGame = () => {
     onSubmit("start");
-    // musicChange(true);
   };
 
   const scores = () => {
-    console.log("scores");
+    onSubmit("scoreWindow");
   };
 
   return (
